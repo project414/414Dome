@@ -1,0 +1,221 @@
+package com.nc.elemap.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.nc.elemap.dao.mysql.CDimStaffInfoMapper;
+import com.nc.elemap.dao.redis.JedisClient;
+import com.nc.elemap.entity.CDimStaffInfo;
+import com.nc.elemap.entity.CDimStaffInfoExample;
+import com.nc.elemap.entity.CDimStaffInfoExample.Criteria;
+import com.nc.elemap.util.CookieUtils;
+import com.nc.elemap.util.JsonUtils;
+import com.nc.elemap.util.LoginProving;
+import com.nc.elemap.util.RedisConstants;
+import com.nc.elemap.dao.mysql.CDimStaffRoleMapper;
+import com.nc.elemap.dao.mysql.CStLoginLogMapper;
+import com.nc.elemap.entity.CDimStaffRole;
+import com.nc.elemap.entity.CStLoginLog;
+import com.nc.elemap.util.DateUtil;
+
+@Component
+@Service
+public class UserService {
+
+	private static Logger iLog = Logger.getLogger("stdout");
+
+	@Autowired
+	private CDimStaffInfoMapper dao;
+
+	@Autowired
+	private CDimStaffRoleMapper cDimStaffRoleMapper;
+
+	@Autowired
+	private CStLoginLogMapper cStLoginLogMapper;
+
+	@Resource
+	private JedisClient jedisClient;
+
+	/**
+	 * 用户登录验证
+	 * 
+	 * @param request
+	 * @param response
+	 * @author css
+	 * @version 1.0
+	 */
+	public String addlogin(HttpServletRequest request, HttpServletResponse response) {
+		String msg = "";
+		boolean islogin = false;// 默认不能登陆
+		boolean falg = false;// 默认不能访问域登录
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String status = request.getParameter("status");
+		// 验证是否存在当前帐号和密码
+		if (password != "" || password != null) {
+			
+				if (StringUtils.isNotBlank(status) && status.equals("1")) {
+					// 查询域用户是否存在
+					// 验证是否存在当前帐号和密码
+					falg = LoginProving.isValid(username, password);
+
+					if (falg) {
+
+						// 查询用户名是否存在
+						// 验证是否存在当前帐号和密码
+						CDimStaffInfo dimStaffInfo = addFieldUserInfo(username);
+
+						// 判断用户信息是否为空，为空给予提示，不为空获取菜单权限信息跳转到主页面
+						if (dimStaffInfo == null) {
+							msg = "{\"success\":false, \"msg\":\"本地用户名不存在！\"}";
+						} else {
+
+							islogin = true;
+
+						}
+						if (islogin) {
+							// 生成token
+							String token = UUID.randomUUID().toString();
+							// redis存储用户登录信息
+							jedisClient.set(RedisConstants.REDIS_USER_SESSION_KEY + token,
+									JsonUtils.objectToJson(dimStaffInfo));
+							// 设置session的过期时间30分钟
+							jedisClient.expire(RedisConstants.REDIS_USER_SESSION_KEY + token, 3600 * 4);
+
+							// 添加写cookie的逻辑，cookie的有效期是关闭浏览器就失效。
+							CookieUtils.setCookie(request, response, "USER_TOKEN", token);
+							msg = "{\"success\":true,\"name\":\"" + dimStaffInfo.getUserId() + "\",\"token\":\"" + token
+									+ "\"}";
+						}
+
+					} else {
+						msg = "{\"success\":false, \"msg\":\"该用户域账号不存在或域密码不正确！\"}";
+					}
+				} else {
+
+					// 查询用户名是否存在
+					// 验证是否存在当前帐号和密码
+					CDimStaffInfo dimStaffInfo = addCDimStaffInfo(username, password);
+
+					// 判断用户信息是否为空，为空给予提示，不为空获取菜单权限信息跳转到主页面
+					if (dimStaffInfo == null) {
+						msg = "{\"success\":false, \"msg\":\"本地用户名不存！\"}";
+					} else {
+						islogin = true;
+					}
+					if (islogin) {
+						// 生成token
+						String token = UUID.randomUUID().toString();
+						// redis存储用户登录信息
+						jedisClient.set(RedisConstants.REDIS_USER_SESSION_KEY + token,
+								JsonUtils.objectToJson(dimStaffInfo));
+						// 设置session的过期时间30分钟
+						jedisClient.expire(RedisConstants.REDIS_USER_SESSION_KEY + token, 3600 * 4);
+
+						// 添加写cookie的逻辑，cookie的有效期是关闭浏览器就失效。
+						CookieUtils.setCookie(request, response, "USER_TOKEN", token);
+						msg = "{\"success\":true,\"name\":\"" + dimStaffInfo.getUserId() + dimStaffInfo.getRoleName() + "\",\"token\":\"" + token
+								+ "\"}";
+					}
+				}
+		
+		} else {
+			msg = "{\"success\":false, \"msg\":\"密码不能为空！\"}";
+		}
+
+		return msg;
+
+	}
+
+	/**
+	 * 根据用户名和密码查询用户信息
+	 * 
+	 * @param userName
+	 * @param userpassd
+	 * @return
+	 */
+	public CDimStaffInfo addCDimStaffInfo(String userName, String userpassd) {
+		CDimStaffInfoExample example = new CDimStaffInfoExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(userName);
+		criteria.andUserPasswordEqualTo(userpassd);
+		criteria.andStatusNotEqualTo(2);
+		List<CDimStaffInfo> list = dao.selectByExample(example);
+		CDimStaffInfo d = null;
+		if (list != null && list.size() > 0) {
+			d = list.get(0);
+
+			String data = DateUtil.getDateFormatter();// 调用DateUtil类的getDateFormatter()方法。
+			CDimStaffRole cDimStaffRole = cDimStaffRoleMapper.loadRoleId(d.getStaffId());
+			CStLoginLog record = new CStLoginLog();
+			record.setId(UUID.randomUUID().toString().replace("-", ""));
+			record.setUserId(d.getUserId());
+			record.setPost(d.getPost());
+			record.setStaffId(cDimStaffRole.getStaffId());
+			record.setStaffName(cDimStaffRole.getStaffName());
+			record.setRoleId(cDimStaffRole.getRoleId());
+			record.setRoleName(cDimStaffRole.getRoleName());
+			record.setLoginType("02");
+			record.setLoginData(data);
+
+			int n = cStLoginLogMapper.insertSelective(record);
+			if (n > 0) {
+				iLog.info(record.getId() + "插入成功！" + data);
+			} else {
+				iLog.info(record.getId() + "插入失败！" + data);
+			}
+		}
+		return d;
+	}
+
+	
+	/**
+	 * 根据域登录用户名查询用户信息
+	 * 
+	 * @param userName
+	 * @param userpassd
+	 * @return
+	 */
+	public CDimStaffInfo addFieldUserInfo(String userName) {
+		CDimStaffInfoExample example = new CDimStaffInfoExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUserIdEqualTo(userName);
+		criteria.andStatusNotEqualTo(2);
+		List<CDimStaffInfo> list = dao.selectByExample(example);
+		CDimStaffInfo d = null;
+		if (list != null && list.size() > 0) {
+			d = list.get(0);
+
+			String data = DateUtil.getDateFormatter();// 调用DateUtil类的getDateFormatter()方法。
+			CDimStaffRole cDimStaffRole = cDimStaffRoleMapper.loadRoleId(d.getStaffId());
+			CStLoginLog record = new CStLoginLog();
+			record.setId(UUID.randomUUID().toString().replace("-", ""));
+			record.setUserId(d.getUserId());
+			record.setPost(d.getPost());
+			record.setStaffId(cDimStaffRole.getStaffId());
+			record.setStaffName(cDimStaffRole.getStaffName());
+			record.setRoleId(cDimStaffRole.getRoleId());
+			record.setRoleName(cDimStaffRole.getRoleName());
+			record.setLoginType("02");
+			record.setLoginData(data);
+
+			int n = cStLoginLogMapper.insertSelective(record);
+			if (n > 0) {
+				iLog.info(record.getId() + "插入成功！" + data);
+			} else {
+				iLog.info(record.getId() + "插入失败！" + data);
+			}
+		}
+		return d;
+	}
+}

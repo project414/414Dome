@@ -1,0 +1,17 @@
+package 打印机;
+
+public class Text {
+
+	public static void main(String[] args) {
+		InkBox inkBox=null;
+		Paper paper=null;//方法中变量无默认值。 
+		printer painter=new printer();
+		InkBox=new GragInkBox();
+		paper=new A4Paper();
+		printer.print(inkBox,paper);
+		perinter.print(inkBox,paper);
+		inkBox=new B5Paper();
+		printer.print(inkBox,paper);
+	}
+
+}

@@ -1,0 +1,179 @@
+package com.nc.elemap.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nc.elemap.dao.mysql.COdsDeviceTrainMapper;
+import com.nc.elemap.dao.mysql.COdsInformationLogMapper;
+import com.nc.elemap.dao.mysql.COdsMotorTrailerMapper;
+import com.nc.elemap.dao.mysql.OdsGpsMapper;
+import com.nc.elemap.dao.redis.JedisClient;
+import com.nc.elemap.entity.CDimStaffInfo;
+import com.nc.elemap.entity.CDimTrainInfo;
+import com.nc.elemap.entity.COdsDeviceTrain;
+import com.nc.elemap.entity.COdsInformationLog;
+import com.nc.elemap.entity.COdsInformationLogExample;
+import com.nc.elemap.entity.COdsMotorTrailer;
+import com.nc.elemap.entity.OdsGps;
+import com.nc.elemap.entity.OdsGpsExample;
+import com.nc.elemap.entity.ReturnResult;
+import com.nc.elemap.util.ConfigPropertyUtils;
+import com.nc.elemap.util.CookieUtils;
+import com.nc.elemap.util.GetDistance;
+import com.nc.elemap.util.HttpClientUtil;
+import com.nc.elemap.util.JsonUtils;
+import com.nc.elemap.util.RedisConstants;
+
+@Service
+@RequestMapping("/informations")
+public class FactoryService {
+
+	@Autowired
+	private OdsGpsMapper odsGpsMapper;
+
+	@Autowired
+	private COdsDeviceTrainMapper cOdsDeviceTrainMapper;
+
+	@Autowired
+	private COdsMotorTrailerMapper cOdsMotorTrailerMapper;
+	
+	@Autowired
+	private COdsInformationLogMapper cOdsInformationLogMapper;
+
+	@Resource
+	private JedisClient jedisClient;
+
+	// 定时判断车辆是否出厂
+	@RequestMapping(value = "/selectInformations.act", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public void selectState() {
+		try {
+//			System.out.println("12345678765432345676543---------------------------------------------------------------------------------------");
+//			String token = CookieUtils.getCookieValue(request, "USER_TOKEN");
+//			if (StringUtils.isBlank(token)) {
+//				token = request.getParameter("token");
+//			}
+//			String userJson = jedisClient.get(RedisConstants.REDIS_USER_SESSION_KEY + token);
+//			CDimStaffInfo user = JsonUtils.jsonToPojo(userJson, CDimStaffInfo.class);
+//
+			String pushUrl = "http://10.73.50.91:8443/pushsys/platform/platformPushMsg.act";
+			Map<String, Object> param = new HashMap<>();
+//			param.put("userAccountList", user.getUserId());
+			param.put("userAccountList"," admin");
+			param.put("title", "车辆出厂消息");
+			param.put("custom", "{}");
+			param.put("appName", "com.csrmobile.smartparking");
+			String content = "";
+			
+			content = "机车的车辆编码为：E123123 已出厂 "+ "/n" + "被拖车辆：T123"
+					 + "/n" + "车辆设备：已解绑";
+			param.put("insideContent", content);
+			param.put("content", content);
+			String json = HttpClientUtil.doPost(pushUrl, param, "utf-8");
+			System.out.println(content);
+//			OdsGps odsGps = new OdsGps();
+//			OdsGpsExample example = new OdsGpsExample();
+//			List<OdsGps> gpsList = odsGpsMapper.selectByExample(example);
+//			for (OdsGps odss : gpsList) {
+//				odsGps = odsGpsMapper.selectCoordinate(odss.getDeviceId());
+//				// 判断行车方向
+//				if (Integer.parseInt(odss.getDirection()) >= 0 && Integer.parseInt(odss.getDirection()) <= 20) {
+//
+//					double la = Double.parseDouble(odsGps.getLatitude());
+//					double lo = Double.parseDouble(odsGps.getLongitude());
+//					// 计算车距离边界的距离
+//					double distance = GetDistance.D_jw(la, lo, 13387012.016984427, 4346613.589042086);
+//					if (distance < 100) {
+//						// 获取设备绑定的车头编码
+//						COdsDeviceTrain dongTrain = new COdsDeviceTrain();
+//						dongTrain = cOdsDeviceTrainMapper.selectDongTrainId(odss.getDeviceId());
+//						// 获取车头绑定的拖车编码
+//						COdsMotorTrailer tuoTrain = new COdsMotorTrailer();
+//						tuoTrain = cOdsMotorTrailerMapper.selectTuoTrainId(dongTrain.getTrainId());
+//						// 查看拖车是否绑定设备
+//						COdsDeviceTrain tuoDevice = new COdsDeviceTrain();
+//						tuoDevice = cOdsDeviceTrainMapper.selectTuoDevice(tuoTrain.getTrailerTrainId());
+//
+//						if (tuoTrain != null && tuoTrain.getMotorTrainId() != null && tuoTrain.getMotorTrainId() != ""
+//								&& tuoTrain.getTrailerId() != null && tuoTrain.getTrailerId() != ""
+//								&& tuoDevice.getDeviceId() != null && tuoDevice.getDeviceId() != "") {
+//							content = "机车的车辆编码为：" + tuoTrain.getMotorTrainId() + "/n" + "机车的设备编码为："
+//									+ tuoTrain.getMotorDeviceId() + "/n" + "被拖车的车辆编码为：" + tuoTrain.getTrailerTrainId()
+//									+ "/n" + "被拖车的设备编码为：" + tuoDevice.getDeviceId();
+//							param.put("insideContent", content);
+//							param.put("content", content);
+//							String json = HttpClientUtil.doPost(pushUrl, param, "utf-8");
+//
+//							// return ReturnResult.build(500, "msg1",
+//							// "机车的车辆编码为："+tuoTrain.getMotorTrainId()+"/n"+
+//							// "机车的设备编码为："+tuoTrain.getMotorDeviceId()+"/n"+
+//							// "被拖车的车辆编码为："+tuoTrain.getTrailerTrainId()+"/n"+
+//							// "被拖车的设备编码为："+tuoTrain.getTrailerId());
+//							System.out.println("11111111111111111111");
+//						} else if (tuoTrain != null && tuoTrain.getMotorTrainId() != null
+//								&& tuoTrain.getMotorTrainId() != "" && tuoTrain.getTrailerId() != null
+//								&& tuoTrain.getTrailerId() != "") {
+//							// return ReturnResult.build(500, "msg2",
+//							// "机车的车辆编码为："+tuoTrain.getMotorTrainId()+"/n"+
+//							// "机车的设备编码为："+tuoTrain.getMotorDeviceId()+"/n"+
+//							// "被拖车的车辆编码为："+tuoTrain.getTrailerTrainId());
+//							content = "机车的车辆编码为：" + tuoTrain.getMotorTrainId() + "/n" + "机车的设备编码为："
+//									+ tuoTrain.getMotorDeviceId() + "/n" + "被拖车的车辆编码为：" + tuoTrain.getTrailerTrainId();
+//							param.put("insideContent", content);
+//							param.put("content", content);
+//							String json = HttpClientUtil.doPost(pushUrl, param, "utf-8");
+//							System.out.println("22222222222222222");
+//
+//						} else if (tuoTrain != null && tuoTrain.getMotorTrainId() != null
+//								&& tuoTrain.getMotorTrainId() != "") {
+//							content = "机车的车辆编码为：" + tuoTrain.getMotorTrainId() + "/n" + "机车的设备编码为："
+//									+ tuoTrain.getMotorDeviceId();
+//							param.put("insideContent", content);
+//							param.put("content", content);
+//							String json = HttpClientUtil.doPost(pushUrl, param, "utf-8");
+//							// return ReturnResult.build(500, "msg3",
+//							// "机车的车辆编码为："+tuoTrain.getMotorTrainId()+"/n"+
+//							// "机车的设备编码为："+tuoTrain.getMotorDeviceId());
+//							System.out.println("333333333333333333");
+//
+//						}
+//						// else return ReturnResult.build(500, "fail", "车辆非机车");
+//					}
+//					// else return null;
+//				}
+				// else return null;
+
+//			}
+			// return null;
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			// return ReturnResult.build(500, "err", "系统异常 ");
+		}
+//	}
+
+	// 查询消息列表
+
+	@RequestMapping(value = "/selectInformation.act", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public List<COdsInformationLog> selectInformation(HttpServletRequest request, HttpServletResponse response) {
+			
+			List<COdsInformationLog> news = cOdsInformationLogMapper.selectByExample(null);
+			return news;
+			
+	}
+
+}

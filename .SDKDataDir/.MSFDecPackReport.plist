@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EventDate</key>
+	<string>2020-10-06</string>
+	<key>KeyFailCount1</key>
+	<integer>0</integer>
+	<key>KeyFailCount2</key>
+	<integer>0</integer>
+	<key>KeySuccessCount2</key>
+	<integer>0</integer>
+	<key>NullKeyFailCount</key>
+	<integer>0</integer>
+	<key>TotalCount</key>
+	<integer>1320</integer>
+</dict>
+</plist>

@@ -1,0 +1,123 @@
+package com.nc.elemap.controller;
+
+import java.util.List;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.nc.elemap.dao.mysql.COdsDeviceTrainMapper;
+import com.nc.elemap.dao.mysql.COdsInformationLogMapper;
+import com.nc.elemap.dao.mysql.COdsMotorTrailerMapper;
+import com.nc.elemap.dao.mysql.OdsGpsMapper;
+import com.nc.elemap.dao.redis.JedisClient;
+import com.nc.elemap.entity.COdsDeviceTrain;
+import com.nc.elemap.entity.COdsInformationLog;
+import com.nc.elemap.entity.COdsMotorTrailer;
+import com.nc.elemap.entity.OdsGps;
+import com.nc.elemap.entity.OdsGpsExample;
+import com.nc.elemap.entity.ReturnResult;
+import com.nc.elemap.util.GetDistance;
+@Controller
+@RequestMapping("/information")
+public class FactoryController {
+
+	@Resource
+	private JedisClient jedisClient;
+
+	@Autowired
+	private OdsGpsMapper odsGpsMapper;
+	
+	@Autowired
+	private COdsDeviceTrainMapper cOdsDeviceTrainMapper;
+	
+	@Autowired
+	private COdsMotorTrailerMapper cOdsMotorTrailerMapper;
+	
+	@Autowired
+	private COdsInformationLogMapper cOdsInformationLogMapper;
+
+	// 定时判断车辆是否出厂
+	@RequestMapping(value = "selectState.act", method = { RequestMethod.POST, RequestMethod.GET, })
+	@ResponseBody
+	public ReturnResult selectState() {
+	try {
+		OdsGps odsGps = new OdsGps();
+		OdsGpsExample example = new OdsGpsExample();
+		List<OdsGps> gpsList = odsGpsMapper.selectByExample(example);
+		for (OdsGps odss : gpsList)
+        {
+			odsGps = odsGpsMapper.selectCoordinate(odss.getDeviceId());
+			//判断行车方向
+			if (Integer.parseInt(odss.getDirection())>=0&&Integer.parseInt(odss.getDirection())<=20)
+            {
+
+                double la = Double.parseDouble(odsGps.getLatitude());
+                double lo = Double.parseDouble(odsGps.getLongitude());
+                // 计算车距离边界的距离
+                double distance = GetDistance.D_jw(la, lo, 36.33401229228413,
+                        120.27794793633431);
+                if (distance < 100)
+                {
+                	//获取设备绑定的车头编码
+                	COdsDeviceTrain dongTrain = new COdsDeviceTrain();
+                	dongTrain = cOdsDeviceTrainMapper.selectDongTrainId(odss.getDeviceId());
+                	//获取车头绑定的拖车编码
+                	COdsMotorTrailer tuoTrain = new COdsMotorTrailer();
+                	tuoTrain = cOdsMotorTrailerMapper.selectTuoTrainId(dongTrain.getTrainId());
+                	if(tuoTrain != null && tuoTrain.getMotorTrainId() != null && tuoTrain.getTrailerId() != null
+                			&&tuoTrain.getTrailerTrainId() != null){
+                		return ReturnResult.build(500, "msg1", "机车的车辆编码为："+tuoTrain.getMotorTrainId()+
+                				"机车的设备编码为："+tuoTrain.getMotorDeviceId()+
+                				"被拖车的车辆编码为："+tuoTrain.getTrailerTrainId()+
+                				"被拖车的设备编码为："+tuoTrain.getTrailerId());
+                	}else if(tuoTrain != null && tuoTrain.getMotorTrainId() != null && tuoTrain.getTrailerId() != null
+                			&&(tuoTrain.getTrailerTrainId() == null || tuoTrain.getTrailerTrainId() == "")){
+                		return ReturnResult.build(500, "msg2", "机车的车辆编码为："+tuoTrain.getMotorTrainId()+
+                				"机车的设备编码为："+tuoTrain.getMotorDeviceId()+
+                				"被拖车的车辆编码为："+tuoTrain.getTrailerTrainId());
+                	
+                	}else if(tuoTrain != null && tuoTrain.getMotorTrainId() != null 
+                			&& (tuoTrain.getTrailerId() == null|| tuoTrain.getTrailerId() == "")
+                			&&(tuoTrain.getTrailerTrainId() == null || tuoTrain.getTrailerTrainId() == "")){
+                		return ReturnResult.build(500, "msg3", "机车的车辆编码为："+tuoTrain.getMotorTrainId()+
+                				"机车的设备编码为："+tuoTrain.getMotorDeviceId());
+                	
+                	}else return ReturnResult.build(500, "fail", "车辆非机车");
+                }else  return ReturnResult.build(500, "fail", "车辆非出厂");
+            }else  return ReturnResult.build(500, "fail", "车辆非出厂");
+            
+        }return null;
+
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return ReturnResult.build(500, "err", "系统异常 ");
+		}
+	}
+
+	
+	
+	
+	// 查询消息列表
+
+		@RequestMapping(value = "/selectInformation.act", method = { RequestMethod.POST, RequestMethod.GET })
+		@ResponseBody
+		public List<COdsInformationLog> selectInformation(HttpServletRequest request, HttpServletResponse response) {
+				
+				List<COdsInformationLog> news = cOdsInformationLogMapper.selectByExample(null);
+				System.out.println(news);
+				return news;
+				
+		}
+	
+	
+	
+
+
+}

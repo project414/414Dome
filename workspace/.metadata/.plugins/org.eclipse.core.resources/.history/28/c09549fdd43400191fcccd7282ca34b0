@@ -1,0 +1,172 @@
+/*
+	time: 20180725,
+	with: varnish-bus login,
+	used: set init
+*/
+//varnish-bus
+class Login extends smilePro {
+	stateSubmit() {
+		//获取用户名密码ajax
+		//sessionStorage.clear();
+		if(localStorage.getItem('MEPlogin') != null){
+			baseLayout.init(['buslineSet']);
+			baseCrolls.init(['isitem']);
+			setTimeLogin();
+			function setTimeLogin(){
+				const objType = eval('(' + localStorage.getItem('MEPlogin') + ')');
+				let dataType = {};
+				for(let key in objType){
+					dataType[key.toLowerCase()] = objType[key]
+				};
+				$.ajax({
+					method: 'post',
+					url: navUrls.getRootPath() + '/mep/user/ajaxLoginIn.act',
+					data: dataType,
+					success: function(resp){
+						
+					},
+				});
+				setTimeout(setTimeLogin,3.5 * 60 * 60 * 1000);
+			};
+			return false;
+			/*setTimeout(function (){
+				$('[data-page="login"]').hide();
+			},0);*/
+		}else{
+			const loginHtml = `<div class="otherPage" data-page="login">
+				<div class="header verCen">
+					<h1 class="t">车辆定位系统</h1>
+				</div>
+				<div class="main">
+					<div class="loginBox">
+						<div class="bd">
+							<div class="login-main">
+								<form action="#">
+									<div class="sbm-list">
+										<div class="inbox">
+											<i class="licon used">&nbsp;</i>
+											<input type="text" id="userName" name="userName" placeholder="用户名" class="lbtn" />
+										</div>
+										<div class="inbox">
+											<i class="licon password">&nbsp;</i>
+											<input type="password" id="pwd" name="passWord" placeholder="密码" class="lbtn" />
+										</div>
+										<div class="inbox nbd">
+											<label class="yu" for="kb">
+												<input type="checkbox" id="kb" name="status" />
+												<i class="ig">
+													域登录<span>&nbsp;</span>
+												</i>
+											</label>
+										</div>
+									</div>
+									<div class="btnBom">
+										<button type="button" class="btn-vs" value="登录" id="login-submit">登录</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="setTime-layout hide">&nbsp;</div>
+				</div>
+			</div>`;
+			$('body').append(loginHtml);
+			const dataAession = JSON.parse(localStorage.getItem('MEPlogined'));
+			setTimeout(function (){
+				if(localStorage.getItem('MEPlogined') != null){
+					for(let key in dataAession){
+						//dataType[key.toLocaleLowerCase()] = dataAession[key];
+						if(key != 'status'){
+							$(`[name=${key}]`).val(dataAession[key]);
+						}else{
+							if(dataAession[key]){
+								$(`[name=${key}]`).prop('checked',true);
+							}else{
+								$(`[name=${key}]`).prop('checked',false);
+							};
+						};
+					};
+				};
+			},0);
+		};
+		//error data
+		let outBox;
+		function setErrorData(req) {
+			clearTimeout(outBox, 1000);
+			outBox = setTimeout(function() {
+				$('.otherPage[data-page="login"] .setTime-layout').hide();
+			}, 1000);
+			if(req != undefined || req != null || req != ''){
+				$('.otherPage[data-page="login"] .setTime-layout').text(req).show();
+			}else{
+				$('.otherPage[data-page="login"] .setTime-layout').show();
+			};
+		};
+		//记录cookies
+		function setCookie(name, value) {
+			var Days = 30;
+			var exp = new Date();
+			exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+			document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+		};
+		//获取
+		function getCookie(name) {
+		   var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+			if(arr = document.cookie.match(reg)) return unescape(arr[2]);
+			else return null;
+		};
+		//submit data
+		function setReorData(){
+			const userName = $("#userName").val();
+			const pwd = $("#pwd").val();
+			if(userName == "" || userName == null){
+				setErrorData('用户名不能为空!');
+			}else if(pwd == null || pwd == ""){
+				setErrorData('密码不能为空!');
+			}else{
+				$.ajax({
+					method: 'post',
+					url: navUrls.getRootPath() + '/mep/user/ajaxLoginIn.act',
+					data: {
+						username: userName,
+						password: pwd,
+						status: $('#kb').is(':checked') ? '1' : null
+					},
+					success: function(resp) {
+						const data = eval('(' + resp.data + ')');
+						if(data.success == true) {
+							//登录成功，跳转到主页面
+							const storged = JSON.stringify({
+								userName: userName,
+								passWord: pwd,
+								status: $('#kb').is(':checked') ? '1' : null
+							});
+							localStorage.setItem('MEPlogin',storged);
+							localStorage.setItem('MEPlogined',storged);
+							$('.otherPage[data-page="login"]').addClass('pgHide');
+							baseLayout.init(['buslineSet']);
+							baseCrolls.init(['isitem']);
+							setTimeout(function (){
+								baseHistory.init(['stateUrl']);
+							},0);
+						}else{
+							setErrorData(data.msg);
+						};
+					},
+				});
+			};
+		};
+		document.onkeydown = function(e) {
+			if(e.keyCode == 13 && !$('[data-page="login"]').hasClass('pgHide')){
+				setReorData();
+			};
+		};
+		$(document).on('click', '#login-submit', function (){
+			setReorData();
+		});
+	};
+	init(...args) {
+		args.map(_funs => this[_funs]());
+	};
+};
+const baseLogin = new Login();

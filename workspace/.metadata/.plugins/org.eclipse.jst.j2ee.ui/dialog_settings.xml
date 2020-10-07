@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="false" key="J2EE_EXPORT_OVERWRITE"/>
+	<item value="false" key="J2EE_EXPORT_SOURCE"/>
+	<list key="J2EE_EXPORT_JST_WEB">
+		<item value="/Users/wuduan/Desktop/mpi.war"/>
+		<item value="/Users/wuduan/Desktop/mep.war"/>
+		<item value="/Users/wuduan/Desktop/mcq.war"/>
+		<item value="/Users/wuduan/Desktop/vpo.war"/>
+		<item value="/Users/wuduan/vpo.war"/>
+	</list>
+</section>

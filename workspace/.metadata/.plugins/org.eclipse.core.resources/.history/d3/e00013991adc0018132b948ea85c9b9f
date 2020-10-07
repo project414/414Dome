@@ -1,0 +1,497 @@
+package com.nc.elemap.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.nc.elemap.dao.redis.JedisClient;
+import com.nc.elemap.entity.CDimStaffInfo;
+import com.nc.elemap.entity.CDimTrainInfo;
+import com.nc.elemap.entity.CDimTrainInfoExample;
+import com.nc.elemap.entity.COdsDeviceTrain;
+import com.nc.elemap.entity.COdsDeviceTrainExample;
+import com.nc.elemap.entity.COdsDeviceTrainLog;
+import com.nc.elemap.entity.ReturnResult;
+import com.nc.elemap.service.DeviceService;
+import com.nc.elemap.util.CookieUtils;
+import com.nc.elemap.util.DateUtil;
+import com.nc.elemap.util.JsonUtils;
+import com.nc.elemap.util.RedisConstants;
+
+@Controller
+@RequestMapping("/device")
+public class DeviceController {
+	@Resource
+	private JedisClient jedisClient;
+
+	@Autowired
+	private DeviceService deviceService;
+
+	// 查询下拉框车型
+	@RequestMapping(value = "/loadTrainType.act", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public List<CDimTrainInfo> loadTrainType(HttpServletRequest request, HttpServletResponse response) {
+
+		String productType = request.getParameter("productType");
+		String isMotor = request.getParameter("isMotor");
+		String groupType = request.getParameter("groupType");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (StringUtils.isNotBlank(productType)) {
+			map.put("productType", productType);
+		}
+		if (StringUtils.isNotBlank(groupType)) {
+			map.put("groupType", groupType);
+		}
+		if (StringUtils.isNotBlank(isMotor)) {
+			map.put("isMotor", isMotor);
+		}
+		List<CDimTrainInfo> list = deviceService.loadTrainType(map);
+		return list;
+	}
+
+	// 查询下拉框车辆编号
+	@RequestMapping(value = "/loadTrainCode.act", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public List<CDimTrainInfo> loadTrainCode(HttpServletRequest request, HttpServletResponse response) {
+
+		String productType = request.getParameter("productType");
+		String isMotor = request.getParameter("isMotor");
+		String trainType = request.getParameter("trainType");
+		String groupType = request.getParameter("groupType");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (StringUtils.isNotBlank(productType)) {
+			map.put("productType", productType);
+		}
+		if (StringUtils.isNotBlank(isMotor)) {
+			map.put("isMotor", isMotor);
+		}
+		if (StringUtils.isNotBlank(trainType)) {
+			map.put("trainType", trainType);
+		}
+		if (StringUtils.isNotBlank(groupType)) {
+			map.put("groupType", groupType);
+		}
+		List<CDimTrainInfo> list = deviceService.loadTrainCode(map);
+		return list;
+	}
+
+	// 查询下拉框产品类型
+	@RequestMapping(value = "/loadProductType.act", method = { RequestMethod.POST, RequestMethod.GET })
+	@ResponseBody
+	public List<CDimTrainInfo> loadProductType(HttpServletRequest request, HttpServletResponse response) {
+
+		List<CDimTrainInfo> list = deviceService.loadProductType();
+		return list;
+	}
+
+	// // 根据设备编码查询车辆编号
+	// @RequestMapping(value = "selectDevice.act", method = {
+	// RequestMethod.POST,
+	// RequestMethod.GET, })
+	// @ResponseBody
+	// public Map<String, Object> selectDevice(HttpServletRequest request,
+	// HttpServletResponse response) {
+	// Map<String, Object> map = new HashMap<String, Object>();
+	// Map<String, Object> map2 = new HashMap<String, Object>();
+	// String deviceId = request.getParameter("deviceId");
+	// String groupType = request.getParameter("groupType");
+	// String isMotor = request.getParameter("isMotor");
+	// String productType = request.getParameter("productType");
+	// String trainType = request.getParameter("trainType");
+	//
+	// // String deviceId = "2223333";
+	// // String isMotor = "02";
+	// // String productType = "动车";
+	// // String trainType = "E01";
+	//
+	//
+	// if (StringUtils.isNotBlank(isMotor)) {
+	// map.put("isMotor", isMotor);
+	// }
+	// if (StringUtils.isNotBlank(productType)) {
+	// map.put("productType", productType);
+	// }
+	// if (StringUtils.isNotBlank(trainType)) {
+	// map.put("trainType", trainType);
+	// }
+	// if (StringUtils.isNotBlank(groupType)) {
+	// map.put("groupType", groupType);
+	// }
+	//
+	// COdsDeviceTrainExample example = new COdsDeviceTrainExample();
+	// example.createCriteria().andDeviceIdEqualTo(deviceId);
+	// List<COdsDeviceTrain> list = deviceService.selectDevice(example);
+	//
+	// COdsDeviceTrain cods = null;
+	//
+	// if (list != null && list.size() > 0) {
+	// cods = list.get(0);
+	// if (StringUtils.isBlank(cods.getTrainId() )) {
+	// COdsDeviceTrainExample example2 = new COdsDeviceTrainExample();
+	// example2.createCriteria().andDeviceIdNotEqualTo(deviceId)
+	// .andDeviceStatusEqualTo("01");
+	// List<CDimTrainInfo> list1 = deviceService.selectTrain(map);
+	// List<COdsDeviceTrain> list2 = deviceService
+	// .selectTrainId(example2);
+	// List<CDimTrainInfo> list3 = new ArrayList<>();
+	// for (COdsDeviceTrain ods : list2) {
+	// for (CDimTrainInfo dim : list1) {
+	// if (ods.getTrainId().equals(dim.getTrainCode())) {
+	// list3.add(dim);
+	// }
+	// }
+	// if (list3.size() > 0) {
+	// list1.removeAll(list3);
+	// list3.clear();
+	// }
+	// }
+	// map2.put("data", list1);
+	// } else {
+	// map2.put("data", list);
+	// }
+	// return map2;
+	//
+	// }else{
+	// COdsDeviceTrainExample example2 = new COdsDeviceTrainExample();
+	// example2.createCriteria().andDeviceStatusEqualTo("01");
+	// List<CDimTrainInfo> list1 = deviceService.selectTrain(map);
+	// List<COdsDeviceTrain> list2 = deviceService
+	// .selectTrainId(example2);
+	// List<CDimTrainInfo> list3 = new ArrayList<>();
+	// for (COdsDeviceTrain ods : list2) {
+	// for (CDimTrainInfo dim : list1) {
+	// if (ods.getTrainId().equals(dim.getTrainCode())) {
+	// list3.add(dim);
+	// }
+	// }
+	// if (list3.size() > 0) {
+	// list1.removeAll(list3);
+	// list3.clear();
+	// }
+	// }
+	// map2.put("data", list1);
+	// return map2;
+	// }
+	//
+	// }
+
+	// // 设备绑定及解绑
+	// @RequestMapping(value = "updateDevice.act", method = {
+	// RequestMethod.POST,
+	// RequestMethod.GET, })
+	// @ResponseBody
+	// public ReturnResult updateDevice(HttpServletRequest request,
+	// HttpServletResponse response,COdsDeviceTrain record,COdsDeviceTrainLog
+	// record2) {
+	// try {
+	// String token = CookieUtils.getCookieValue(request, "USER_TOKEN");
+	// if (StringUtils.isBlank(token)) {
+	// token = request.getParameter("token");
+	// }
+	// String userJson = jedisClient.get(RedisConstants.REDIS_USER_SESSION_KEY +
+	// token);
+	// CDimStaffInfo user = JsonUtils.jsonToPojo(userJson, CDimStaffInfo.class);
+	//
+	//
+	// String groupType = request.getParameter("groupType");
+	// String deviceId = request.getParameter("deviceId");
+	// String trainId = request.getParameter("trainId");
+	// String isMotor = request.getParameter("isMotor");
+	// String productType = request.getParameter("productType");
+	// String trainType = request.getParameter("trainType");
+	//
+	//// String deviceId = "2223333";
+	//// String isMotor = "02";
+	//// String productType = "动车";
+	//// String trainType = "E01";
+	////
+	//// String groupType = "123";
+	//// String trainId = "111222";
+	//
+	//
+	// String data = DateUtil.getDateFormatter();//
+	// 调用DateUtil类的getDateFormatter()方法。
+	// COdsDeviceTrainExample example = new COdsDeviceTrainExample();
+	// example.createCriteria().andDeviceIdEqualTo(deviceId);
+	//
+	// List<COdsDeviceTrain> list = deviceService.selectDevice(example);
+	// COdsDeviceTrain ods = null;
+	//
+	// record.setId(UUID.randomUUID().toString().replace("-", ""));
+	// record.setStaffId(user.getStaffId());
+	// record.setGroupType(groupType);
+	// record.setDeviceId(deviceId);
+	// record.setIsMotor(isMotor);
+	// record.setProductType(productType);
+	// record.setTrainType(trainType);
+	// record.setTime(data);
+	//
+	//
+	// if(list != null && list.size()>0){
+	// ods = list.get(0);
+	// COdsDeviceTrainExample example1 = new COdsDeviceTrainExample();
+	// example1.createCriteria().andDeviceIdEqualTo(ods.getDeviceId());
+	//
+	// if(ods.getTrainId() == null || ods.getTrainId().equals("")){
+	// record.setTrainId(trainId);
+	// record.setDeviceStatus("01");
+	// record.setCarStatus("01");
+	// BeanUtils.copyProperties(record2, record);
+	// int result = deviceService.updateDevice(record,example1);
+	// int result2 = deviceService.insertDevice(record2);
+	//
+	// if(result > 0 && result2 > 0){
+	// return ReturnResult.build(200, "success","绑定成功");
+	// }
+	// return ReturnResult.build(500, "fail", "绑定失败！");
+	//
+	// }else{
+	// record.setTrainId("");
+	// record.setDeviceStatus("02");
+	// record.setCarStatus("02");
+	// BeanUtils.copyProperties(record2, record);
+	// int result = deviceService.updateDevice(record,example1);
+	// int result2 = deviceService.insertDevice(record2);
+	// if(result > 0 && result2 > 0){
+	// return ReturnResult.build(200, "success","解绑成功");
+	// }
+	// return ReturnResult.build(500, "fail", "解绑失败！");
+	// }
+	// }else{
+	// record.setTrainId(trainId);
+	// record.setDeviceStatus("01");
+	// record.setCarStatus("01");
+	// BeanUtils.copyProperties(record2, record);
+	// int result = deviceService.insertDevice2(record);
+	// int result2 = deviceService.insertDevice(record2);
+	// if(result > 0 && result2 > 0){
+	// return ReturnResult.build(200, "success","绑定成功");
+	// }
+	// return ReturnResult.build(500, "fail", "绑定失败！");
+	//
+	// }
+	//
+	// } catch (Exception e) {
+	// // TODO: handle exception
+	// e.printStackTrace();
+	// return ReturnResult.build(500, "err", "系统异常 ");
+	// }
+	//
+	// }
+
+	// 根据设备编码查询车辆编号
+	@RequestMapping(value = "selectDevice.act", method = { RequestMethod.POST, RequestMethod.GET, })
+	@ResponseBody
+	public Map<String, Object> selectDevice(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		String deviceId = request.getParameter("deviceId");
+		String groupType = request.getParameter("groupType");
+		String isMotor = "02";
+		String productType = request.getParameter("productType");
+		String trainType = request.getParameter("trainType");
+
+		// String groupType = "123";
+		// String deviceId = "2223333";
+		// String isMotor = "02";
+		// String productType = "动车";
+		// String trainType = "E01";
+
+		if (StringUtils.isNotBlank(isMotor)) {
+			map.put("isMotor", isMotor);
+		}
+		if (StringUtils.isNotBlank(productType)) {
+			map.put("productType", productType);
+		}
+		if (StringUtils.isNotBlank(trainType)) {
+			map.put("trainType", trainType);
+		}
+		if (StringUtils.isNotBlank(groupType)) {
+			map.put("groupType", groupType);
+		}
+
+		COdsDeviceTrainExample example = new COdsDeviceTrainExample();
+		example.createCriteria().andDeviceIdEqualTo(deviceId);
+		List<COdsDeviceTrain> list = deviceService.selectDevice(example);
+		if (list != null && list.size() > 0) {
+			if (StringUtils.isNotBlank(list.get(0).getTrainId())) {
+				map2.put("data", list);
+			}
+		}
+		map2.put("data", list);
+		return map2;
+
+	}
+
+	// 判断车辆编号是否已绑定设备
+	// @RequestMapping(value = "selectCarId.act", method = { RequestMethod.POST,
+	// RequestMethod.GET, })
+	// @ResponseBody
+	// public ReturnResult selectCarId(HttpServletRequest request,
+	// HttpServletResponse response, COdsDeviceTrain record,
+	// COdsDeviceTrainLog record2) {
+	// String trainId = request.getParameter("trainId");
+	// // String trainId = "111222";
+	// COdsDeviceTrainExample example = new COdsDeviceTrainExample();
+	// example.createCriteria().andTrainIdEqualTo(trainId);
+	// List<COdsDeviceTrain> list = deviceService.selectDevice(example);
+	// if (list != null && list.size() > 0) {
+	// return ReturnResult.build(500, "fail", "车辆已绑定！");
+	// }
+	// return ReturnResult.build(200, "success", "车辆未绑定");
+	// }
+
+	// 设备绑定及解绑
+	@RequestMapping(value = "updateDevice.act", method = { RequestMethod.POST, RequestMethod.GET, })
+	@ResponseBody
+	public ReturnResult updateDevice(HttpServletRequest request, HttpServletResponse response, COdsDeviceTrain record,
+			CDimTrainInfo record3,COdsDeviceTrainLog record2) {
+		try {
+			String token = CookieUtils.getCookieValue(request, "USER_TOKEN");
+			if (StringUtils.isBlank(token)) {
+				token = request.getParameter("token");
+			}
+			String userJson = jedisClient.get(RedisConstants.REDIS_USER_SESSION_KEY + token);
+			CDimStaffInfo user = JsonUtils.jsonToPojo(userJson, CDimStaffInfo.class);
+			
+			 String deviceId = "11112223333";
+			 String isMotor = "02";
+			 String productType = "动车";
+			 String trainType = "E01";
+			
+			 String groupType = "123";
+			 String trainId = "11122233";
+
+//			String groupType = request.getParameter("groupType");
+//			String deviceId = request.getParameter("deviceId");
+//			String trainId = request.getParameter("trainId");
+//			String isMotor = "02";
+//			String productType = request.getParameter("productType");
+//			String trainType = request.getParameter("trainType");
+			 
+			String lieLength = "";
+			if(groupType.equals("8编组")){
+				lieLength = "202";
+			}else if(groupType.equals("16编组")){
+				lieLength = "405";
+			}
+
+			
+
+			String data = DateUtil.getDateFormatter();// 调用DateUtil类的getDateFormatter()方法。
+			COdsDeviceTrainExample example = new COdsDeviceTrainExample();
+			example.createCriteria().andDeviceIdEqualTo(deviceId);
+
+			List<COdsDeviceTrain> list = deviceService.selectDevice(example);
+			COdsDeviceTrain ods = null;
+
+			record.setId(UUID.randomUUID().toString().replace("-", ""));
+			record.setStaffId(user.getStaffId());
+			record.setGroupType(groupType);
+			record.setDeviceId(deviceId);
+			record.setIsMotor(isMotor);
+			record.setProductType(productType);
+			record.setTrainType(trainType);
+			record.setTime(data);
+			
+			record3.setId(UUID.randomUUID().toString().replace("-", ""));
+			record3.setGroupType(groupType);
+			record3.setProductType(productType);
+			record3.setIsMotor(isMotor);
+			record3.setLieLength(lieLength);
+			record3.setTrainCode(trainId);
+			
+			COdsDeviceTrainExample example2 = new COdsDeviceTrainExample();
+			example2.createCriteria().andTrainIdEqualTo(trainId);
+			List<COdsDeviceTrain> list3 = deviceService.selectDevice(example2);
+			
+			CDimTrainInfoExample example3 = new CDimTrainInfoExample();
+			example3.createCriteria().andTrainCodeEqualTo(trainId);
+			List<CDimTrainInfo> list4 = deviceService.selectTrain2(example3);
+
+			
+			if (list != null && list.size() > 0) {
+				ods = list.get(0);
+				COdsDeviceTrainExample example1 = new COdsDeviceTrainExample();
+				example1.createCriteria().andDeviceIdEqualTo(ods.getDeviceId());
+
+				if (ods.getTrainId() == null || ods.getTrainId().equals("")) {
+					record.setTrainId(trainId);
+					record.setDeviceStatus("01");
+					record.setCarStatus("01");
+					BeanUtils.copyProperties(record2, record);
+					if (list3 == null || list3.size() == 0) {
+					int result = deviceService.updateDevice(record, example1);
+					int result2 = deviceService.insertDevice(record2);
+					if(list4 == null||list4.size() == 0 ){
+					int result3 = deviceService.insertTrain(record3);
+					}
+					
+					if (result > 0 && result2 > 0 ) {
+						return ReturnResult.build(200, "success", "绑定成功");
+					}
+					return ReturnResult.build(500, "fail", "绑定失败！");
+					}else
+						return ReturnResult.build(500, "fail", "车辆已绑定");
+				} else {
+					record.setTrainId("");
+					record.setDeviceStatus("02");
+					record.setCarStatus("02");
+					BeanUtils.copyProperties(record2, record);
+					int result = deviceService.updateDevice(record, example1);
+					int result2 = deviceService.insertDevice(record2);
+					if (result > 0 && result2 > 0) {
+						return ReturnResult.build(200, "success", "解绑成功");
+					}
+					return ReturnResult.build(500, "fail", "解绑失败！");
+				}
+			} else {
+				record.setTrainId(trainId);
+				record.setDeviceStatus("01");
+				record.setCarStatus("01");
+				BeanUtils.copyProperties(record2, record);
+				if (list3 == null || list3.size() == 0) {
+				int result = deviceService.insertDevice2(record);
+				int result2 = deviceService.insertDevice(record2);
+				if(list4 == null||list4.size() == 0 ){
+					int result3 = deviceService.insertTrain(record3);
+					}
+				
+				if (result > 0 && result2 > 0 ) {
+					return ReturnResult.build(200, "success", "绑定成功");
+				}return ReturnResult.build(500, "fail", "绑定失败！");
+				}else
+					return ReturnResult.build(500, "fail", "车辆已绑定");
+				
+
+			}
+//			if (list3 == null || list3.size() == 0) {
+//			}else
+//				return ReturnResult.build(500, "fail", "车辆已绑定");
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return ReturnResult.build(500, "err", "系统异常 ");
+		}
+
+	}
+
+}

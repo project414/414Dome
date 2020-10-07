@@ -1,0 +1,536 @@
+/*
+ * name: longs+
+ * with: base[XX,~]
+ * time: 20180723
+ * change: base通用部分push in common
+ */
+/* extend base js */
+function smilePro(option = {}) {
+	this.option = option;
+};
+let initRoOnly = 0;
+class smileProTor extends smilePro {
+	mapBase() {
+		var base = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                url: navUrls.getRootPath() + '/mep/resource/json/crrc.json',
+                format: new ol.format.TopoJSON({
+                    layers: ['boundary', 'other', 'road', 'building', 'lawn','poi']
+                }),
+                overlaps: false
+            }),
+            style: function (feature, resolution) {
+
+                switch (feature.get('layer')) {
+                    case 'poi':
+                        poiStyle.getText().setText(feature.get('name'));
+                        return poiStyle;
+                    case 'boundary': return boundaryStyle;
+                    case 'lawn': return lawnStyle;
+                    case 'road':
+                        roadStyle.getText().setText(feature.get('name'));
+                        return (resolution < 2) ? roadStyle : null;
+                    case 'building':
+                        return buildingStyle(feature, resolution);
+                    case 'other':
+                        otherStyle.getText().setText(feature.get('name'));
+                        return otherStyle;
+                    default: return null;
+                }
+            }
+        });
+		var geoMarker = new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: '#77ddee',
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({
+                    color: '#3399CC'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255,255,0,0.9)',
+                    width: 2
+                })
+            }),
+            zIndex: 99
+        });
+
+        var markers = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255,211,6,0.8)',
+                    width: 10
+                }),
+                zIndex: 9999
+            })
+        });
+
+		var railwayStyle_1 = new ol.style.Style({
+			text: new ol.style.Text({
+				placement: 'line',
+				textBaseline: 'bottom',
+				offsetY: -2,
+				fill: new ol.style.Fill({
+					color: [50, 50, 50, 1]
+				}),
+				stroke: new ol.style.Stroke({
+					color: '#FFFFFF',
+					width: 1
+				}),
+			}),
+			stroke: new ol.style.Stroke({
+				color: '#00BFFF',
+				width: 3
+			}),
+			zIndex: 99
+		});
+
+		var railwayStyle_2 = new ol.style.Style({
+			text: new ol.style.Text({
+				placement: 'line',
+				textBaseline: 'bottom',
+				fill: new ol.style.Fill({
+					color: [50, 50, 50, 1]
+				})
+			}),
+			stroke: new ol.style.Stroke({
+				color: '#ADD8E6',
+				width: 3
+			}),
+			zIndex: 99
+		});
+		
+        var railway = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                url: navUrls.getRootPath() + '/mep/resource/json/railway.json',
+                format: new ol.format.TopoJSON({
+                    layers: ['railway']
+                }),
+                overlaps: false
+            }),
+            style: function (feature, resolution) {
+
+                var text = feature.get('name');
+                if (resolution > 2) {
+                    text = '';
+                }
+
+                switch (feature.get('yx')) {
+                    case 1:
+                        railwayStyle_1.getText().setText(text);
+                        return railwayStyle_1;
+                    case 0:
+                        railwayStyle_2.getText().setText(text);
+                        return railwayStyle_2;
+                }
+            }
+        });
+        var map = new ol.Map({
+            layers: [base, railway],
+            target: 'map',
+            view: new ol.View({
+                center: ol.proj.fromLonLat([120.277, 36.330]),
+                minZoom: 15,
+                zoom: 17
+            }),
+            interactions: ol.interaction.defaults({
+            	                   altShiftDragRotate:false,
+
+pinchRotate:false
+            	                }),
+            
+        });
+        map.addLayer(markers);
+        const container = document.querySelector(`#map-popup`);
+		const content = document.querySelector(`#map-popup-content`);
+		const closer = document.querySelector(`#map-popup-closer`);
+		const overlay = new ol.Overlay({
+			element: container,
+			autoPan: true,
+			autoPanAnimation: {
+				duration: 250
+			}
+		});
+		closer.onclick = function() {
+			overlay.setPosition(undefined);
+			closer.blur();
+			return false;
+		};
+		map.addOverlay(overlay);
+		map.on('singleclick', function(evt) {
+			var feature = map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+				return feature;
+			});
+			if(feature && feature.get('setData')){
+				let coordinate = evt.coordinate;//feature.getGeometry()['A'];
+				let html = '<ol class="list">';
+				for(let key in feature.get('setData')){
+					html += `<li><span class="popfl">${key}：</span>${feature.get('setData')[key]}</li>`;
+				};
+				html += '</ol>';
+				content.innerHTML = html;
+				overlay.setPosition(coordinate);
+			};
+		});
+        const source = new ol.source.Vector({
+			wrapX: false
+		});
+		const vector = new ol.layer.Vector({
+			source: source
+		});
+		map.addLayer(vector);
+		function mapTimePollLine(arg){
+			const args = arg;
+			let dataType = {};
+			if(!args){
+				dataType.factoryArea = $('#vueMap .pullDown-box ul li.upOuter span').text().trim();
+				if($('#vueMap .pullDown-box ul li.upOuter span').text().trim() == '全厂区'){
+					dataType.factoryArea = '';
+				};
+			}else{
+				dataType = arg;
+			};
+        	$.ajax({
+				type: 'POST',
+				url: navUrls.getRootPath() + '/mep/PositionController/loadCodsGpsDeviceTrain.act',
+				data: dataType,
+				success: function (data){
+					let poll = [];
+					source.clear();
+					let setArry = [];
+					function displayOnTheLine(coordinate,v,state) {
+						/*let vDataPoss = {
+							'车辆编号': `${v.trainId}`,
+							'编组类型': `${v.groupType}`,
+							'产品类型': `${v.productType}`,
+							'是否机车': `${v.isMotor == '01' ? '是' : '否'}`
+						};
+						var style = new ol.style.Style({
+							stroke: new ol.style.Stroke({
+								width: 8,
+								color: [255, 0, 0, 0.8]
+							}),
+					        image: new ol.style.Circle({
+					            radius: 6,
+					            fill: new ol.style.Fill({
+					                color: '#3399CC'
+					            }),
+					            stroke: new ol.style.Stroke({
+					                color: 'rgba(255,255,0,0.9)',
+					                width: 2
+					            })
+					        }),
+					        zIndex: 99
+						});
+						let lineFeature = new ol.Feature({
+							setData: vDataPoss,
+							geometry: new ol.geom.Point(coordinate)
+						});
+						lineFeature.setStyle(style);
+						source.addFeature(lineFeature);*/
+						let vDataPoss = {
+							'机车编号': `${v.trainId}`,
+							'被拖车编号': v.trailerTrainId == null ? '' : v.trailerTrainId
+							/*'编组类型': `${v.groupType}`,
+							'产品类型': `${v.productType}`,
+							'是否机车': `${v.isMotor == '01' ? '是' : '否'}`*/
+						};
+						let icon = new ol.style.Icon({
+							anchor: [.5, .5],
+	                        rotateWithView: true,
+		            		src: '/mep/resource/img/train22.png'
+						});
+						if(!state && v.deviceType == '02'){//deviceType==02无源
+							icon = new ol.style.Icon({
+								anchor: [.5, .5],
+		                        rotateWithView: true,
+			            		src: '/mep/resource/img/train22-green.png'
+							});
+							vDataPoss = {
+								'车辆编号': `${v.trainId}`,
+								'编组类型': `${v.groupType}`,
+								'产品类型': `${v.productType}`,
+								'是否机车': `${v.isMotor == '01' ? '是' : '否'}`
+							};
+						};
+						/*anchorXUnits: 'fraction',
+						anchorYUnits: 'pixels',*/
+						let rotationValue;
+						let offsetX = 0;
+						let offsetY = -15;
+						let colorstate = [50, 50, 0, 1];
+						if(state == 'one'){
+							icon = new ol.style.Icon({
+								/*anchor: [1, 1],
+								offset: [0,-10],*/
+		                        anchor: [1, .8],
+		                        rotateWithView: true,
+			            		src: '/mep/resource/img/train200.png'
+							});
+							rotationValue = rotation[v.factoryArea][v.trackCode];
+							offsetX = -100;
+							offsetY = -4;
+							colorstate = [255, 255, 0, 1];
+							vDataPoss = {
+								'车辆编号': `${v.trainId}`,
+								'编组类型': `${v.groupType}`,
+								'产品类型': `${v.productType}`,
+								'是否机车': `${v.isMotor == '01' ? '是' : '否'}`
+							};
+						}else if(state == 'two'){
+							icon = new ol.style.Icon({
+		                        anchor: [1, .5],
+		                        rotateWithView: true,
+			            		src: '/mep/resource/img/train400.png'
+							});
+							rotationValue = rotation[v.factory_area || v.factoryArea][v.track_code || v.trackCode];
+							offsetX = -200;
+							offsetY = -4;
+							colorstate = [255, 255, 0, 1];
+							vDataPoss = {
+								'车辆编号': `${v.trainId}`,
+								'编组类型': `${v.groupType}`,
+								'产品类型': `${v.productType}`,
+								'是否机车': `${v.isMotor == '01' ? '是' : '否'}`
+							};
+						}else{
+							//
+						}
+						var style = new ol.style.Style({
+							stroke: new ol.style.Stroke({
+								width: 8,
+								color: [255, 0, 0, 0.8]
+							}),
+					        image: icon,
+							text: new ol.style.Text({
+								text: v.trainId,
+								offsetX: offsetX,
+								offsetY: offsetY,
+								fill: new ol.style.Fill({
+									color: colorstate
+								})
+							})
+						});
+						let lineFeature = new ol.Feature({
+							setData: vDataPoss,
+							geometry: new ol.geom.Point(coordinate)
+						});
+						lineFeature.setStyle(style);
+						vector.getSource().addFeature(lineFeature);//source
+						if(rotationValue){
+							style.getImage().setRotation(rotationValue);
+							style.getText().setRotation(rotationValue);
+						};
+			        };
+					data.map(function (redg){
+						/*if(redg.carStatus == '01' || (redg.latitude != '' && redg.latitude != 'null' && redg.latitude != null)){
+							let poll = [];
+							poll.push(eval(redg.longitude),eval(redg.latitude));
+							displayOnTheLine(ol.proj.transform(poll,'EPSG:4326','EPSG:3857'),redg);
+						}else{
+							if(redg.factoryArea){
+								eachPoll(redg);
+							}else{
+								console.log(redg);
+							};
+						};*/
+						if(redg.carStatus == '01' && redg.motorStatus != '01'){//isMotor
+							let poll = [];
+							poll.push(eval(redg.longitude),eval(redg.latitude));
+							displayOnTheLine(ol.proj.transform(poll,'EPSG:4326','EPSG:3857'),redg);
+						}else{
+							if(redg.factoryArea){
+								const v = redg;
+								let poll = trackCodeArry[v.factoryArea][v.trackCode][redg.numCar == '01' ? 0 : 1] ||
+								trackCodeArry[v.factoryArea][v.trackCode][0];
+								displayOnTheLine(poll,redg,'one');
+								/*eachPoll(redg);*/
+							}else{
+								console.log(redg);
+							};
+						};
+					});
+				}
+			});
+        	if(!args){
+	        	setTimeout(mapTimePollLine,2500);
+        	}else{
+        		clearTimeout(mapTimePollLine,0);
+        		/*setTimeout(mapTimePollLine,2500);*/
+        	};
+        };
+        mapTimePollLine();
+        //area
+        $(document).on('click', '#vueMap .pullDown-box ul li', function (){
+        	const valued = $(this).attr('data-value');
+        	if(valued == '0'){
+        		mapTimePollLine({factoryArea: ''});
+        	}else{
+        		mapTimePollLine({factoryArea: $(this).find('span').text().trim()});
+        	};
+        });
+		//stop
+        let style = new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				width: 8,
+				color: [255, 0, 0, 0.8]
+			})
+		});
+		let lineFeature;
+		function eachPoll(v){
+			lineFeature = new ol.Feature({
+				setData: {
+					'车辆编号': `${v.trainId}`,
+					'编组类型': `${v.groupType}`,
+					'产品类型': `${v.productType}`,
+					'停放股道': `${v.trackCode}`
+				},
+	            geometry: new ol.geom.LineString(trackCodeArry[v.factory_area || v.factoryArea][v.track_code || v.trackCode])//arrty[ii]
+			});
+			lineFeature.setStyle(style);
+			source.addFeature(lineFeature);
+			map.render();
+		};
+	};
+	extractBaseMap(...args) {
+		if(mapnum > 0){
+			return false;
+		};
+		mapnum++;
+	};
+	init(...args) {
+		args.map(_funs => this[_funs]());
+		if(initRoOnly != 0){
+			return false;
+		};
+		//iOS 键盘问题
+		hideKeyboard();
+		//fastclick base
+		FastClick.attach(document.body);
+		//popstate
+		window.onpopstate = function (){
+			if(localStorage.getItem('MEPlogin') == null){
+				if($('[data-page="login"]').length == 0){
+					baseLogin.init(['stateSubmit']);
+				}else{
+					$('[data-page="login"]').removeClass('pgHide');
+				};
+				return false;
+			};
+			if(navUrls.GetQueryString('page') == null){
+				$('.otherPage[data-page="map"]').siblings('.otherPage').addClass('pgHide');
+				$('.otherPage.pgShow').removeClass('pgShow');
+			}else{
+				$('.otherPage').removeClass('pgShow').addClass('pgHide');
+				$('.otherPage[data-page="map"]').removeClass('pgHide');
+				$('.otherPage[data-page="' + navUrls.GetQueryString('page') + '"]').addClass('pgShow');
+			};
+			if($('.otherPage[data-page="' + navUrls.GetQueryString('page') + '"]').parents('#queryItem').length > 0){
+				if(navUrls.GetQueryString('mark') == null){
+					$('.otherPage[data-page="' + navUrls.GetQueryString('page') + '"]').find('.search .ql').show();
+					$('.otherPage[data-page="' + navUrls.GetQueryString('page') + '"]').find('.main .refer-list').removeClass('pgShow');
+				};
+			};
+		};
+		//remove box
+		$(document).on('touchstart', '.button-positive', function (){
+			$(this).parents('.popup-container').remove();
+		});
+		$(document).on('click', '.popup-container .popup-buttons', function (){
+			$(this).parents('.popup-container').remove();
+		});
+		//index touchstart
+		$(document).on('touchstart', '.view-list .bd .obd ,.view-list .bd .text', function (){
+			const item = ['map','login'];
+			let index = $(this).parents('.bd').index();
+			$('.otherPage[data-page="' + item[index] + '"]').removeClass('pgHide')
+			$('.otherPage[data-page="' + item[index] + '"]').addClass('pgShow');
+			history.pushState('', null, '?page=' + item[index]);
+		});
+		$(document).on('touchstart', '.header .back', function (){
+			history.back();
+		});
+		$(document).on('touchstart', '.header .search .bd.set', function (){
+			$('.otherPage[data-page="adminSet"]').addClass('pgShow');
+			history.pushState('', null, '?page=adminSet');
+		});
+		$(document).on('click', '.header .link.intro', function (){
+			$('.otherPage[data-page="intro"]').addClass('pgShow');
+			history.pushState('', null, '?page=intro');
+		});
+		$(document).on('click', '.code .dicon', function (){
+			$('[data-code="true"]').removeAttr('data-code');
+			$(this).parents('li').attr('data-code','true');
+			scanCode();
+		});
+		initRoOnly++;
+	};
+};
+//关闭global
+let vueint = {
+	closed: function (event){
+		if($(event.target).hasClass('pullDown-box')){
+			$(event.target).addClass('vishide').removeClass('active').find('.pullUp-list').removeClass('pullUp-list');
+		}else{
+			//alert(1)
+		};
+	},
+	piClosed: function (that){
+		$(that).parents('.file-item').find('.file-in').removeClass('vishide');
+		setTimeout(function (){
+			$(that).parents('.file-pic').remove();
+		},100);
+	}
+};
+function closed(that){
+	vueint.closed(that);
+};
+function hideKeyboard(){
+    document.activeElement.blur();
+    $('input,textarea').blur();
+};
+//iOS || Android
+function scanCode(){
+	const isMobile = {
+		iOS: navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false,
+		Android: navigator.userAgent.match(/Android/i) ? true : false
+	};
+	if(isMobile.iOS){
+		window.location.href = 'ios://scanPrepend';
+		return false;
+	}else if(isMobile.Android){
+		window.Android.scanCode();
+		return false;
+	};
+};
+function codePushData(arg){//iOS
+	setResult(arg);
+};
+function setResult(arg){//Android
+	if($('[data-code="true"]').find('[data-name="deviceCode"]').length > 0 || 
+			$('[data-code="true"]').find('[data-name="trailerId"]').length > 0){
+		$('[data-code="true"]').find('[data-name="deviceCode"]').val(arg);
+		$('[data-code="true"]').find('[data-name="trailerId"]').val(arg);
+		$('[data-code="true"]').find(`[data-name="trailerId"]`).trigger('input');
+	}else{
+		if($('[data-code="true"]').find(`.pullDown-box [data-value=${arg}]`).length > 0){
+			$('[data-code="true"]').find(`.pullDown-box [data-value=${arg}]`).trigger('click');
+		}else{
+			baseLayout.stateUrl('该设备编码未添加，请先添加设备编码再绑定！');
+		};
+	};
+	$('[data-code="true"]').removeAttr('data-code');
+};
+const basePro = new smileProTor();
+(function (){
+	if(typeof jQuery != 'undefined'){
+		$(function (){
+			baseLogin.init(['stateSubmit']);
+		});
+	}else{
+		setTimeout(arguments.callee, 50);
+	};
+})();

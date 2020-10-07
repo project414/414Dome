@@ -1,0 +1,4 @@
+2019-03-19 07:50:08,802 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-03-19 07:50:08,841 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 39 resources
+2019-03-19 07:50:08,899 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-03-19 07:50:08,899 [Worker-8] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-elemap/src/test/resources

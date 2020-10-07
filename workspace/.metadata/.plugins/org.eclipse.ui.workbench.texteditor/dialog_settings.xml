@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item value="484" key="DIALOG_X_ORIGIN"/>
+		<item value="325" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="if (lists != null &amp;&amp; lists.size() &gt; 0) {" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="if (lists != null &amp;&amp; lists.size() &gt; 0) {"/>
+			<item value="informations"/>
+			<item value="information"/>
+			<item value="tion"/>
+			<item value="mation"/>
+			<item value="infomation"/>
+			<item value="selectSaffInfo"/>
+			<item value="loadUserId"/>
+		</list>
+		<list key="replacehistory">
+			<item value="com.nc.elemap"/>
+			<item value="com.nc.positioning"/>
+			<item value="COdsGpsDeviceTrainLog"/>
+			<item value="GroupType"/>
+			<item value="productType"/>
+			<item value="ProductType"/>
+			<item value="isMotor"/>
+			<item value="IsMotor"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="269" key="DIALOG_WIDTH"/>
+		<item value="1|.SF NS Text|11.0|0|COCOA|1|.SFNSText" key="DIALOG_FONT_NAME"/>
+		<item value="398" key="DIALOG_HEIGHT"/>
+		<item value="1031" key="DIALOG_X_ORIGIN"/>
+		<item value="112" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

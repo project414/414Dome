@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>-1777635786-4</key>
+	<array>
+		<dict>
+			<key>err</key>
+			<string>文件不存在，请重试</string>
+			<key>result</key>
+			<false/>
+			<key>source</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>-717654168-4</key>
+	<array>
+		<dict>
+			<key>oaUrl</key>
+			<string>https://docs.qq.com/doc/DRWNwdlhpWGx1YVJo</string>
+			<key>result</key>
+			<true/>
+			<key>source</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>190524263-93</key>
+	<array>
+		<dict>
+			<key>oaUrl</key>
+			<string>https://docs.qq.com/sheet/DRVJ4bnVnRGZaUFBB</string>
+			<key>result</key>
+			<true/>
+			<key>source</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>2106761823-44</key>
+	<array>
+		<dict>
+			<key>oaUrl</key>
+			<string>https://docs.qq.com/sheet/DRWRkeFpwREZRSnZV</string>
+			<key>result</key>
+			<true/>
+			<key>source</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>288674135-43</key>
+	<array>
+		<dict>
+			<key>oaUrl</key>
+			<string>https://docs.qq.com/doc/DRW1HcEdpdk9QUHNH</string>
+			<key>result</key>
+			<true/>
+			<key>source</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 6 resources" deleteContents="false" description="Delete 6 resources" element1="/emm-auth-server" element2="/emm-core" element3="/emm-microservice" element4="/emm-ui" element5="/emm-user" element6="/enterprise" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="6" stamp="1559697669681"/>
+</session>

@@ -1,0 +1,218 @@
+package com.nc.elemap.controller;
+
+import java.net.InetAddress;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Date;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import com.nc.elemap.dao.redis.JedisClient;
+import com.nc.elemap.entity.CDimStaffInfo;
+import com.nc.elemap.service.FactoryService;
+import com.nc.elemap.service.PositionService;
+import com.nc.elemap.util.CookieUtils;
+import com.nc.elemap.util.JsonUtils;
+import com.nc.elemap.util.RedisConstants;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
+/**
+ * @author yanggang 定时任务每5秒更新实时表
+ */
+@Component
+
+public class TimeTaskController
+{
+
+    private static Logger iLog = Logger.getLogger("positionSocketHandler");
+    @Autowired
+    private PositionService positionService;
+    
+    @Autowired
+    private FactoryService factoryService;
+
+    @Resource
+    private JedisClient jedisClienth;
+    @Autowired
+    private JedisPool jedisPool;
+    
+    private static String YG_CACHE_LOCK = "YG_cache_lock";
+
+    private static int EXPIRE_PERIOD = 5;
+    private static String CACHE_LOCK_status = "true";
+
+    private static final String LOCK_SUCCESS = "OK";
+    private static final Long RELEASE_SUCCESS = 1L;
+    private static final long DEFAULT_EXPIRE = 40000;// 超时时间 20s
+
+    private String getAddressIp()
+    {
+        try
+        {
+            InetAddress addr = InetAddress.getLocalHost();
+            String ip = addr.getHostAddress().toString(); // 获取本机ip
+            return ip;
+        }
+        catch (Exception e)
+        {
+            // TODO: handle exception
+            return null;
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Scheduled(cron = "0/30 * * * * ?") // 每隔7秒隔行一次
+    public void getPosiztionByTime(HttpServletRequest request)
+            throws InterruptedException, ClassNotFoundException, SQLException
+    {
+        String ip = this.getAddressIp(); // 获取本机ip
+        String key = "mep_lock-scheduler";
+        /**
+         *   * redisRepository.set(key, ip, nxxx, expx, time)    *
+         * key:我们使用key来当锁，保持整个项目是唯一的    * ip:value值，表明当前占用锁的是哪一台机器    *
+         * nxxx:我们填的是NX,即当key不存在时，我们进行set操作；若key已经存在，则不做任何操作    *
+         * expx：我们传的是PX，意思是我们要给这个key加一个过期的设置，具体时间由第五个参数决定    * time:过期时间   
+         */
+        Jedis jedis = jedisPool.getResource();
+
+        // jedis.set("10", "1000");
+        // System.out.println(jedis.get("10"));
+        String result = jedis.set(key, ip, "NX", "PX", DEFAULT_EXPIRE);
+        // String result2 = jedis.set(key, "200", "NX", "PX", DEFAULT_EXPIRE);
+        // System.out.println(jedis.get(key));
+
+        if (LOCK_SUCCESS.equals(result))
+        {// 拿到锁，拥有执行权限
+        	//定时检查是否有车辆出厂
+//        	System.out.println(request.getCookies());
+        	String token = CookieUtils.getCookieValue(request, "USER_TOKEN");
+			if (StringUtils.isBlank(token)) {
+				token = request.getParameter("token");
+			}
+			String userJson = jedisClienth.get(RedisConstants.REDIS_USER_SESSION_KEY + token);
+			CDimStaffInfo user = JsonUtils.jsonToPojo(userJson, CDimStaffInfo.class);
+			System.out.println(userJson);
+			System.out.println(user);
+            factoryService.selectState();
+            try
+            {
+                Date date = new Date();
+                System.out.println("存车线scheduler started..." + date);
+                // logger.info("start
+                positionService.insertCOdsStorageLineInquire();
+                Date date2 = new Date();
+                System.out.println("存车线scheduler finished..." + date2);
+            }
+            finally
+            { // 释放锁
+              // 定义Lua脚本代码，确保操作是原子性的，获取锁对应的value值，检查是否与ip相等，如果相等则删除锁
+
+                Thread.sleep(29000);
+              
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                // jedis.eval()方法，执行Lua脚本，使参数KEYS[1]赋值为key，ARGV[1]赋值为ip
+                Object unlockResult = jedis.eval(script,
+                        Collections.singletonList(key),
+                        Collections.singletonList(ip));
+                if (RELEASE_SUCCESS.equals(unlockResult))
+                {
+                    System.out.println("存车线unlock success...");
+                    jedis.close();
+
+                }
+                else
+                {
+                    System.out.println("存车线unlock failed...");
+                    jedis.close();
+
+                }
+            }
+        }
+        else
+        { // 没拿到锁
+          // 查看当前锁是被谁占用
+            String lockIp = jedis.get(key);
+          //定时检查是否有车辆出厂
+            factoryService.selectState();
+            System.out.println("scheduler lock ip : {}" + lockIp);
+            jedis.close();
+        }
+
+        // 获取ip地址
+
+        /**
+         * iLog.info("更新表C_Ods_Gps_Device_Train数据");
+         * positionService.updateCOdsGpsDeviceTrain();
+         * 
+         * iLog.info("更新表C_Ods_Gps_Device_Train_log数据");
+         * positionService.updateCOdsGpsDeviceTrain();
+         * 
+         * iLog.info("更新表C_Ods_Train_Inquire数据");
+         * positionService.updateCOdstrainInquire();
+         */
+        // jedisClienth.del(YG_CACHE_LOCK);
+
+        // System.out.println(jedisClienth.get(YG_CACHE_LOCK) +
+        // "car+++++-------");jedisClienth.expire(YG_CACHE_LOCK, 4);
+        // if (jedisClienth.get(YG_CACHE_LOCK) == null)
+        // {// jedisClienth.setnx();
+        // jedisClienth.set(YG_CACHE_LOCK, CACHE_LOCK_status);
+        // jedisClienth.expire(YG_CACHE_LOCK, 3);
+        // Date date = new Date();
+        //
+        // System.out.println(
+        // jedisClienth.get(YG_CACHE_LOCK) + "car-------" + date);
+        // //
+        // // System.out.println("-------------------");
+        // // positionService.updateCarLine();
+        // // positionService.updateBOdsGpsGeviceCar();
+        // }
+
+        // 更新存车线实时表
+        /*
+         * timeTaskExample example = new timeTaskExample(); timeTask record =
+         * new timeTask(); example.createCriteria()
+         * .andTimetasknameEqualTo("insertCOdsStorageLineInquire");
+         * List<timeTask> list = timeTaskService.getTimeTaskStatus(example); if
+         * (list.get(0).getStatus().equals("0")) {
+         * 
+         * record.setId("1");
+         * record.setTimetaskname("insertCOdsStorageLineInquire");
+         * record.setStatus("1"); System.out.println("修改定时器状态为 1");
+         * timeTaskService.updateTimeTaskStatus(record, example); try {
+         * positionService.insertCOdsStorageLineInquire(); }
+         * 
+         * catch (Exception e) { record.setId("1");
+         * record.setTimetaskname("insertCOdsStorageLineInquire");
+         * record.setStatus("0"); timeTaskService.updateTimeTaskStatus(record,
+         * example); System.out.println("修改定时器状态为 0"); }
+         * 
+         * System.out.println("执行更新存车线当前表"); record.setId("1");
+         * record.setTimetaskname("insertCOdsStorageLineInquire");
+         * record.setStatus("0"); timeTaskService.updateTimeTaskStatus(record,
+         * example); System.out.println("修改定时器状态为 0"); }
+         */
+
+        // iLog.info("更新表c_ods_storage line_Inquire数据");
+    }
+
+    /**
+     * 每天23点00启动生成存车线历史表任务
+     * 
+     * @Scheduled(cron = "0 55 10 ? * *") public void
+     *                 insertCOdsStorageLineInquireLog() { int i =
+     *                 positionService.insertCOdsStorageLineInquireLog(); //
+     *                 iLog.info("定时插入C_Ods_Stroage_Line_Inquire_log历史表完成---"+i)
+     *                 ; }
+     */
+}
+//

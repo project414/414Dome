@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1536804409601_1" label="qd-elemap-second" name="qd-elemap-second"/>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1556585129928_2" label="enterprise" name="enterprise"/>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1556585365752_3" label="new project" name="new project"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1559183002313_4" label="sifang" name="sifang"/>
+<workingSet editPageId="org.eclipse.jdt.ui.JavaWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1559697990035_6" label="emm" name="emm"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1458204528377_0" label="Window Working Set" name="Aggregate for window 1458204528377"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1559183561865_5" label="Multiple Working Sets" name="Aggregate:enterprise:new project:">
+<workingSet IMemento.internal.id="enterprise"/>
+<workingSet IMemento.internal.id="new project"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1582472769536_8" label="Multiple Working Sets" name="Aggregate:emm:enterprise:new project:qd-elemap-second:">
+<workingSet IMemento.internal.id="emm"/>
+<workingSet IMemento.internal.id="enterprise"/>
+<workingSet IMemento.internal.id="new project"/>
+<workingSet IMemento.internal.id="qd-elemap-second"/>
+</workingSet>
+<mruList name="qd-elemap-second"/>
+<mruList name="emm"/>
+<mruList name="sifang"/>
+<mruList name="new project"/>
+<mruList name="enterprise"/>
+</workingSetManager>

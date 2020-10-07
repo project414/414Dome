@@ -1,0 +1,212 @@
+2019-05-20 14:02:16,685 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:16,706 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-20 14:02:16,707 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-20 14:02:16,712 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:16,712 [Worker-65] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/test/resources
+2019-05-20 14:02:24,206 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:24,238 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 14:02:24,295 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 595 resources
+2019-05-20 14:02:26,220 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:26,221 [Worker-47] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-ui/src/test/resources
+2019-05-20 14:02:31,464 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:31,467 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-20 14:02:31,467 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-20 14:02:31,471 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:31,471 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/test/resources
+2019-05-20 14:02:33,572 [Worker-48] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.dacas.enterprise:push-server-sdk:jar:1.0 is missing, no dependency information available
+2019-05-20 14:02:34,276 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:34,279 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 14:02:34,296 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 14:02:34,300 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:34,300 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-microservice/src/test/resources
+2019-05-20 14:02:35,920 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:35,921 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 14:02:35,934 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 4 resources
+2019-05-20 14:02:35,953 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:35,954 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-auth-server/src/test/resources
+2019-05-20 14:02:43,322 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:43,324 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 24 resources
+2019-05-20 14:02:43,445 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:43,445 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-commutercar-query/src/test/resources
+2019-05-20 14:02:49,849 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:49,853 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 39 resources
+2019-05-20 14:02:50,008 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:50,008 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-elemap/src/test/resources
+2019-05-20 14:02:56,941 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:56,944 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 22 resources
+2019-05-20 14:02:57,045 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:02:57,045 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-pipeline-inspection/src/test/resources
+2019-05-20 14:03:01,582 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:03:01,583 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 38 resources
+2019-05-20 14:03:01,729 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 14:03:01,729 [Worker-48] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/vehicle-positioning/src/test/resources
+2019-05-20 14:54:24,123 [Start Help Server] INFO  org.eclipse.jetty.util.log - Logging initialized @25463950ms
+2019-05-20 14:54:24,839 [Start Help Server] INFO  org.eclipse.jetty.server.Server - jetty-9.2.13.v20150730
+2019-05-20 14:54:25,071 [Start Help Server] INFO  o.e.j.server.handler.ContextHandler - Started o.e.j.s.ServletContextHandler@606683cd{/help,null,AVAILABLE}
+2019-05-20 14:54:25,105 [Start Help Server] INFO  o.e.jetty.server.ServerConnector - Started ServerConnector@ff0c655{HTTP/1.1}{127.0.0.1:51842}
+2019-05-20 14:54:25,106 [Start Help Server] INFO  org.eclipse.jetty.server.Server - Started @25464960ms
+2019-05-20 15:07:14,283 [Worker-105] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for mcq
+2019-05-20 15:07:14,893 [Worker-105] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for mep
+2019-05-20 15:07:15,655 [Worker-105] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for mpi
+2019-05-20 15:07:16,426 [Worker-105] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Cleaning filtered folder for vpo
+2019-05-20 15:31:34,786 [Stop Help Server] INFO  o.e.jetty.server.ServerConnector - Stopped ServerConnector@ff0c655{HTTP/1.1}{127.0.0.1:0}
+2019-05-20 15:31:34,825 [Stop Help Server] INFO  o.e.j.server.handler.ContextHandler - Stopped o.e.j.s.ServletContextHandler@606683cd{/help,null,UNAVAILABLE}
+2019-05-20 15:32:23,377 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:23,382 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-20 15:32:23,382 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-20 15:32:23,386 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:23,386 [Worker-5] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/test/resources
+2019-05-20 15:32:28,122 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:28,148 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 15:32:28,193 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 595 resources
+2019-05-20 15:32:28,226 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:28,226 [Worker-1] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-ui/src/test/resources
+2019-05-20 15:32:35,784 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:35,784 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-20 15:32:35,784 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-20 15:32:35,786 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:35,786 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/test/resources
+2019-05-20 15:32:36,802 [Worker-22] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.dacas.enterprise:push-server-sdk:jar:1.0 is missing, no dependency information available
+2019-05-20 15:32:37,096 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:37,097 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 15:32:37,105 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 15:32:37,108 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:37,108 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-microservice/src/test/resources
+2019-05-20 15:32:37,722 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:37,723 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 15:32:37,727 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 4 resources
+2019-05-20 15:32:37,731 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:37,731 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-auth-server/src/test/resources
+2019-05-20 15:32:44,789 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:44,792 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 24 resources
+2019-05-20 15:32:44,861 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:44,862 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-commutercar-query/src/test/resources
+2019-05-20 15:32:44,870 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of mcq
+2019-05-20 15:32:44,874 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for mcq
+2019-05-20 15:32:44,973 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:47,610 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:47,611 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 39 resources
+2019-05-20 15:32:47,670 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:47,670 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-elemap/src/test/resources
+2019-05-20 15:32:47,670 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of mep
+2019-05-20 15:32:47,670 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for mep
+2019-05-20 15:32:47,677 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:49,138 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:49,138 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 22 resources
+2019-05-20 15:32:49,173 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:49,173 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-pipeline-inspection/src/test/resources
+2019-05-20 15:32:49,174 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of mpi
+2019-05-20 15:32:49,174 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for mpi
+2019-05-20 15:32:49,178 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:52,807 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:52,811 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 38 resources
+2019-05-20 15:32:52,948 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:32:52,948 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/vehicle-positioning/src/test/resources
+2019-05-20 15:32:52,949 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Changed resources require a complete clean of filtered resources of vpo
+2019-05-20 15:32:52,949 [Worker-22] INFO  o.e.m.w.i.f.ResourceFilteringBuildParticipant - Executing resource filtering for vpo
+2019-05-20 15:32:52,953 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:16,085 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:16,142 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-20 15:34:16,202 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 595 resources
+2019-05-20 15:34:16,244 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:16,244 [Worker-6] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-ui/src/test/resources
+2019-05-20 15:34:28,923 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:28,926 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 24 resources
+2019-05-20 15:34:28,948 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:28,949 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-commutercar-query/src/test/resources
+2019-05-20 15:34:31,522 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:31,524 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 39 resources
+2019-05-20 15:34:31,529 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:31,529 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-elemap/src/test/resources
+2019-05-20 15:34:32,830 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:32,831 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 22 resources
+2019-05-20 15:34:32,834 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:32,835 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-pipeline-inspection/src/test/resources
+2019-05-20 15:34:35,245 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:35,246 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 38 resources
+2019-05-20 15:34:35,250 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-20 15:34:35,250 [Worker-18] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/vehicle-positioning/src/test/resources
+2019-05-21 08:05:52,497 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:05:52,510 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-21 08:05:52,511 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-21 08:05:52,516 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:05:52,516 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/test/resources
+2019-05-21 08:05:57,926 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:05:57,958 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-21 08:05:58,016 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 595 resources
+2019-05-21 08:05:58,330 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:05:58,330 [Worker-12] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-ui/src/test/resources
+2019-05-21 08:06:00,453 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:00,453 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-21 08:06:00,453 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-21 08:06:00,455 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:00,455 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/test/resources
+2019-05-21 08:06:01,349 [Worker-3] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.dacas.enterprise:push-server-sdk:jar:1.0 is missing, no dependency information available
+2019-05-21 08:06:02,100 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:02,100 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-21 08:06:02,127 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-21 08:06:02,133 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:02,134 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-microservice/src/test/resources
+2019-05-21 08:06:02,966 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:02,969 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-21 08:06:02,977 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 4 resources
+2019-05-21 08:06:02,980 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:02,980 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-auth-server/src/test/resources
+2019-05-21 08:06:07,050 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:07,051 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 24 resources
+2019-05-21 08:06:07,074 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:07,074 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-commutercar-query/src/test/resources
+2019-05-21 08:06:09,766 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:09,767 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 39 resources
+2019-05-21 08:06:09,777 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:09,778 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-elemap/src/test/resources
+2019-05-21 08:06:11,096 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:11,097 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 22 resources
+2019-05-21 08:06:11,104 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:11,105 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-pipeline-inspection/src/test/resources
+2019-05-21 08:06:13,566 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:13,567 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 38 resources
+2019-05-21 08:06:13,584 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-21 08:06:13,585 [Worker-3] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/vehicle-positioning/src/test/resources
+2019-05-24 09:05:21,152 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:21,177 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-24 09:05:21,177 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/main/resources
+2019-05-24 09:05:21,181 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:21,181 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-core/src/test/resources
+2019-05-24 09:05:27,407 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:27,441 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-24 09:05:27,494 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 595 resources
+2019-05-24 09:05:29,523 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:29,523 [Worker-22] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-ui/src/test/resources
+2019-05-24 09:05:33,604 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:33,612 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-24 09:05:33,613 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/main/resources
+2019-05-24 09:05:33,615 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:33,615 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/modules/emm-user/src/test/resources
+2019-05-24 09:05:34,850 [Worker-26] WARN  o.e.m.c.i.embedder.EclipseLogger - The POM for com.dacas.enterprise:push-server-sdk:jar:1.0 is missing, no dependency information available
+2019-05-24 09:05:35,183 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:35,184 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-24 09:05:35,192 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-24 09:05:35,195 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:35,195 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-microservice/src/test/resources
+2019-05-24 09:05:36,052 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:36,053 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 2 resources
+2019-05-24 09:05:36,059 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 4 resources
+2019-05-24 09:05:36,069 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:36,069 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/server/emm-auth-server/src/test/resources
+2019-05-24 09:05:42,787 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:42,791 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 24 resources
+2019-05-24 09:05:42,880 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:42,881 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-commutercar-query/src/test/resources
+2019-05-24 09:05:48,279 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:48,280 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 39 resources
+2019-05-24 09:05:48,331 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:48,331 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-elemap/src/test/resources
+2019-05-24 09:05:50,568 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:50,569 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 22 resources
+2019-05-24 09:05:50,603 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:50,603 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/mobile-pipeline-inspection/src/test/resources
+2019-05-24 09:05:54,106 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:54,109 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 38 resources
+2019-05-24 09:05:54,161 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2019-05-24 09:05:54,161 [Worker-26] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/wuduan/electric_map/vehicle-positioning/src/test/resources
