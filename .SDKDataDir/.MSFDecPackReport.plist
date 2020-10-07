@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>EventDate</key>
-	<string>2020-10-06</string>
+	<string>2020-10-07</string>
 	<key>KeyFailCount1</key>
 	<integer>0</integer>
 	<key>KeyFailCount2</key>
@@ -13,6 +13,6 @@
 	<key>NullKeyFailCount</key>
 	<integer>0</integer>
 	<key>TotalCount</key>
-	<integer>1320</integer>
+	<integer>1</integer>
 </dict>
 </plist>

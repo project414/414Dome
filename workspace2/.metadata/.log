@@ -2328,3 +2328,6 @@ Caused by: java.net.SocketTimeoutException: connect timed out
 	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:244)
 	at org.apache.http.impl.conn.HttpClientConnectionOperator.connect(HttpClientConnectionOperator.java:125)
 	... 16 more
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2020-10-07 10:00:08.666
+!MESSAGE No repository found at http://www.pramati.com/downloads/eclipse/updates/.
